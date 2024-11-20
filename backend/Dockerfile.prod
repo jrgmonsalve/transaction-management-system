@@ -21,8 +21,10 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Ensure correct permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Set proper permissions for Laravel directories
+RUN chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
 
 # Install production dependencies only
 RUN composer install --no-dev --optimize-autoloader && \

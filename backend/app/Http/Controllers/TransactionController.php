@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
@@ -13,17 +14,17 @@ class TransactionController extends Controller
     {
         $validated = $request->validate([
             'accountNumberFrom' => 'required|string|max:255',
-            'accountNumberTypeFrom' => 'required|string|max:255',
+            'accountNumberTypeFrom' => 'required|in:Credit,Checking,Savings',
             'accountNumberTo' => 'required|string|max:255',
-            'accountNumberTypeTo' => 'required|string|max:255',
+            'accountNumberTypeTo' => 'required|in:Credit,Checking,Savings',
             'amount' => 'required|numeric|min:0',
-            'type' => 'required|in:credit,debit',
             'description' => 'nullable|string',
             'creationDate' => 'required|date',
             'reference' => 'nullable|string',
         ]);
 
         $validated['traceNumber'] = Str::uuid()->toString();
+        $validated['creationDate'] = Carbon::parse($validated['creationDate'])->format('Y-m-d H:i:s');
 
         $transaction = Transaction::create($validated);
 
@@ -34,8 +35,12 @@ class TransactionController extends Controller
     {
         $query = Transaction::query();
 
-        if ($request->has('type')) {
-            $query->where('type', $request->type);
+        if ($request->has('accountNumberTypeFrom')) {
+            $query->where('accountNumberTypeFrom', $request->accountNumberTypeFrom);
+        }
+
+        if ($request->has('accountNumberTypeTo')) {
+            $query->where('accountNumberTypeTo', $request->accountNumberTypeTo);
         }
 
         if ($request->has(['startDate', 'endDate'])) {

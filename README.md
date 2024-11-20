@@ -34,15 +34,15 @@ API_KEY=your_secure_api_key
 ### containers
 
 #### up
+remember change Dockerfile.dev to Dockerfile.prod in docker-composer.yml
 ```bash
-#PROD
 docker-compose up -d --build
-#LOCAL
-docker-compose --profile development up -d --build
 
 docker ps
 docker-compose exec backend php artisan migrate
-docker compose exec backend chmod -R 777 storage bootstrap/cache
+docker-compose exec backend chmod -R 775 storage bootstrap/cache
+docker-compose exec backend chown -R www-data:www-data storage bootstrap/cache
+
 ```
 
 optional if have seeders
@@ -60,9 +60,11 @@ delete volumes (like DB):
 docker-compose down --volumes
 ```
 
-#### check logs
+#### check logs or debug problems
 ```bash
 docker-compose logs backend
 docker-compose logs frontend
 docker-compose logs nginx
+
+docker exec -it <backend-container-id> bash
 ```

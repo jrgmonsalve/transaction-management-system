@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('accountNumberTypeTo');
             $table->string('traceNumber')->unique();
             $table->decimal('amount', 15, 2);
-            $table->string('type'); // 'credit' or 'debit'
             $table->text('description')->nullable();
             $table->date('creationDate');
             $table->string('reference')->nullable();
