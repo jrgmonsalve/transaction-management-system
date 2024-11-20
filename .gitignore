@@ -1,0 +1,4 @@
+webserver/nginx/certs/ssl-cert.pem
+webserver/nginx/certs/ssl-key.pem
+frontend/.env
+.env

@@ -1,0 +1,38 @@
+########## PROD ############
+FROM php:8.3-fpm
+
+# Install system dependencies and PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        curl \
+        libxml2-dev \
+        libcurl4-openssl-dev \
+        libonig-dev \
+        mariadb-client \
+    && docker-php-ext-install pdo_mysql mbstring xml \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy project files
+COPY . .
+
+# Ensure correct permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Install production dependencies only
+RUN composer install --no-dev --optimize-autoloader && \
+    cp .env.example .env && \
+    php artisan key:generate && \
+    php artisan config:cache && \
+    php artisan route:cache
+
+# Expose port 9000
+EXPOSE 9000
+
+# Start PHP-FPM server
+CMD ["php-fpm"]

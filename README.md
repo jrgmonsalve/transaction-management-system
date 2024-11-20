@@ -6,35 +6,63 @@ Ensure you have the following installed:
 - Docker
 - Docker Compose
 
-## Setup Instructions
 
-### 1. Build and Start the Containers
-Run the following command to build and start the backend (Laravel) and frontend (React) containers:
+## Setup Instructions in local
+
+### modify .env files
 ```bash
-docker-compose up --build
+#grl all variables
+
+# back
+APP_ENV=production
+DB_CONNECTION=mysql
+DB_HOST=database
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=secret
+API_KEY=your_secure_api_key
+
+#front all variables
 ```
 
-### 2. Laravel Setup (One-Time)
-1. Access the Laravel container:
-   ```bash
-   docker exec -it laravel_app bash
-   ```
-1. Modify .env file:
-   ```bash
-   vi .env
-   ```
-1. Generate the application key and run migrations:
-   ```bash
-   php artisan key:generate
-   php artisan migrate
-   ```
-1. Exit the container:
-   ```bash
-   exit
-   ```
-
-### Stopping the Project
-To stop all containers, run:
+### certs
 ```bash
-docker-compose down
+
+```
+
+### containers
+
+#### up
+```bash
+#PROD
+docker-compose up -d --build
+#LOCAL
+docker-compose --profile development up -d --build
+
+docker ps
+docker-compose exec backend php artisan migrate
+docker compose exec backend chmod -R 777 storage bootstrap/cache
+```
+
+optional if have seeders
+```bash
+docker-compose exec backend php artisan db:seed 
+```
+#### down & clean
+
+```bash
+docker-compose down 
+```
+
+delete volumes (like DB):
+```bash
+docker-compose down --volumes
+```
+
+#### check logs
+```bash
+docker-compose logs backend
+docker-compose logs frontend
+docker-compose logs nginx
 ```

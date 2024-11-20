@@ -3,13 +3,13 @@
 ## Task Breakdown
 
 ### 1. Backend Setup (Laravel + Docker)
-- **Description**: Create a basic PHP backend using Laravel, containerized using Docker (PHP, MySQL, Apache).
+- **Description**: Create a basic PHP backend using Laravel, containerized using Docker (PHP, MySQL, Nginx).
 - **Estimated Time**:  4 hours
 - **Dependencies/Resources**:
   - Docker and Docker Compose
   - Laravel
   - MySQL
-  - Apache
+  - Nginx
 
 ### 2. Develop Transaction Management API
 - **Description**: Implement RESTful API for creating, retrieving, and deleting transactions.
@@ -25,7 +25,8 @@
 - **Estimated Time**: 8 hours
 - **Dependencies/Resources**:
   - React
-  - Axios for HTTP requests
+  - nest.js
+  - typescript
 
 ### 4. Performance Optimization
 - **Description**: Create a script to import transactions from a CSV file.
