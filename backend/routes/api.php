@@ -1,14 +1,12 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\ApiKeyMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'Data returned successfully']);
-});
 
 Route::middleware([ApiKeyMiddleware::class])->group(function () {
-    Route::get('/transactions', function () {
-        return response()->json(['message' => 'Data returned successfully']);
-    });
+    Route::post('/transactions', [TransactionController::class, 'store']);
+    Route::get('/transactions', [TransactionController::class, 'index']);
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
 });
