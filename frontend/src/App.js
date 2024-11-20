@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import TransactionsDashboard from './components/TransactionsDashboard';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hola</h1>
+      <TransactionsDashboard />
     </div>
   );
 }
