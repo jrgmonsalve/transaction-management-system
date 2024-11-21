@@ -11,9 +11,16 @@ const apiClient = axios.create({
   },
 });
 
-export const fetchTransactions = async (page = 1) => {
+export const fetchTransactions = async (params) => {
   try {
-    const response = await apiClient.get(`/transactions?page=${page}`);
+    if (!params) {
+      params = new URLSearchParams();
+    }
+    const searchParams = params instanceof URLSearchParams 
+      ? params 
+      : new URLSearchParams(params);
+
+    const response = await apiClient.get(`/transactions?${searchParams.toString()}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching transactions:', error);
