@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   fetchTransactions,
   deleteTransactionAPI,
-  createTransaction,
 } from "../services/api";
 import Modal from "./Modal";
 import CreateTransactionForm from "./CreateTransactionForm";
@@ -27,16 +26,6 @@ const TransactionsDashboard = () => {
     lastPage: 1,
     total: 0,
     perPage: 10,
-  });
-
-  const [newTransaction, setNewTransaction] = useState({
-    accountNumberFrom: "",
-    accountNumberTypeFrom: "Savings",
-    accountNumberTo: "",
-    accountNumberTypeTo: "Savings",
-    amount: "",
-    description: "",
-    reference: "",
   });
 
   const handlePageChange = (newPage) => {
@@ -96,16 +85,6 @@ const TransactionsDashboard = () => {
     setDeleteModal({ isOpen: true, id });
   };
 
-  const handleCreate = async (transactionData) => {
-    try {
-      await createTransaction(transactionData);
-      loadTransactions();
-    } catch (error) {
-      console.error("Failed to create transaction:", error);
-    }
-  };
-
-
 
   // Filter handlers grouped together
   const handleFiltersChange = {
@@ -125,9 +104,8 @@ const TransactionsDashboard = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Create Transaction Form Component */}
       <CreateTransactionForm
-        newTransaction={newTransaction}
-        setNewTransaction={setNewTransaction}
-        onSubmit={handleCreate}
+        onTransactionCreated={loadTransactions}
+        //onSubmit={handleCreate}
       />
 
       {/* Filters Component */}

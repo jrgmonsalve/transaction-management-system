@@ -1,4 +1,3 @@
-// src/components/TransactionsTable.js
 import React from 'react';
 
 const TransactionsTable = ({ transactions, loading, onDelete }) => {

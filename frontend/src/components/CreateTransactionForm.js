@@ -1,38 +1,41 @@
-import React from 'react';
-import FormInput from './FormInput';
-import useTransactionForm from '../hooks/useTransactionForm';
+import React from "react";
+import FormInput from "./FormInput";
+import useTransactionForm from "../hooks/useTransactionForm";
+import { createTransaction } from "../services/api";
 
-const CreateTransactionForm = ({ onSubmit }) => {
-  const {
-    formData,
-    errors,
-    handleInputChange,
-    validateForm,
-    resetForm
-  } = useTransactionForm();
+const CreateTransactionForm = ({ onTransactionCreated }) => {
+  const { formData, errors, handleInputChange, validateForm, resetForm } =
+    useTransactionForm();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     try {
-      await onSubmit({
+      await createTransaction({
         ...formData,
-        creationDate: new Date().toISOString()
+        creationDate: new Date().toISOString(),
       });
       resetForm();
+      if (onTransactionCreated) {
+        onTransactionCreated();
+      }
     } catch (error) {
       console.error("Failed to create transaction:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8 space-y-4 bg-white p-6 rounded-lg shadow">
+    <form
+      onSubmit={handleSubmit}
+      className="mb-8 space-y-4 bg-white p-6 rounded-lg shadow"
+    >
       <h2 className="text-xl font-bold mb-4">Create New Transaction</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormInput
           name="accountNumberFrom"
-          placeholder="From Account Number (5-15 digits)"
+          type="number"
+          placeholder="From Account Number (5-15 numbers)"
           value={formData.accountNumberFrom}
           onChange={handleInputChange}
           error={errors.accountNumberFrom}
@@ -51,7 +54,8 @@ const CreateTransactionForm = ({ onSubmit }) => {
 
         <FormInput
           name="accountNumberTo"
-          placeholder="To Account Number (5-15 digits)"
+          type="number"
+          placeholder="To Account Number (5-15 numbers)"
           value={formData.accountNumberTo}
           onChange={handleInputChange}
           error={errors.accountNumberTo}

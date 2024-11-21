@@ -17,7 +17,6 @@ const useTransactionForm = (initialState = {}) => {
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
     
-    // Handle different input types appropriately
     const processedValue = type === 'number' ? 
       (value === '' ? '' : Number(value)) : 
       value;
@@ -27,7 +26,6 @@ const useTransactionForm = (initialState = {}) => {
       [name]: processedValue
     }));
 
-    // Optional: Clear error for this field when user types
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
