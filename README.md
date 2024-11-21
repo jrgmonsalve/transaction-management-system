@@ -9,12 +9,23 @@ Ensure you have the following installed:
 
 ## Setup Instructions in local
 
-### modify .env files
-```bash
-#grl all variables
 
-# back
-APP_ENV=production
+### modify .env files
+
+1. Run the following commands to create the .env files we are going to use.
+
+```bash
+cp .env.example .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+2. Then modify each .env
+
+ - In **.env** for the **docker composer** you must modify all the variables.
+ - In the **backend/.env** for the **API** you only have to modify these variables, keep in mind that the values ​​must match the .env of the docker composer
+```bash
+APP_ENV=local
 DB_CONNECTION=mysql
 DB_HOST=database
 DB_PORT=3306
@@ -22,9 +33,8 @@ DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=secret
 API_KEY=your_secure_api_key
-
-#front all variables
 ```
+ - In the **frontend/.env** for the **frontend** you must modify all the variables the API_KEY from matching the one in the backend
 
 ### containers
 
