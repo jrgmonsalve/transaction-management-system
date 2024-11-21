@@ -20,7 +20,6 @@ const useTransactionForm = (initialState = {}) => {
     const processedValue = type === 'number' ? 
       (value === '' ? '' : Number(value)) : 
       value;
-
     setFormData(prev => ({
       ...prev,
       [name]: processedValue
@@ -36,7 +35,6 @@ const useTransactionForm = (initialState = {}) => {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.accountNumberFrom) {
       newErrors.accountNumberFrom = "Account number from is required";
     } else if (!/^\d{5,15}$/.test(formData.accountNumberFrom)) {
@@ -49,7 +47,7 @@ const useTransactionForm = (initialState = {}) => {
       newErrors.accountNumberTo = "Account number must be between 5 and 15 digits";
     }
 
-    if (!formData.amount) {
+    if (formData.amount === null || formData.amount === undefined || formData.amount === "") {
       newErrors.amount = "Amount is required";
     } else if (parseFloat(formData.amount) <= 0) {
       newErrors.amount = "Amount must be greater than 0";
