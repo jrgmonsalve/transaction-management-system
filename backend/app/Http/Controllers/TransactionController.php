@@ -35,20 +35,32 @@ class TransactionController extends Controller
     {
         $query = Transaction::query();
 
-        if ($request->has('accountNumberTypeFrom')) {
-            $query->where('accountNumberTypeFrom', $request->accountNumberTypeFrom);
+        if ($request->filled('account_type_from')) {
+            $query->where('accountNumberTypeFrom', $request->account_type_from);
         }
 
-        if ($request->has('accountNumberTypeTo')) {
-            $query->where('accountNumberTypeTo', $request->accountNumberTypeTo);
+        if ($request->filled('account_type_to')) {
+            $query->where('accountNumberTypeTo', $request->account_type_to);
         }
 
-        if ($request->has(['startDate', 'endDate'])) {
-            $query->whereBetween('creationDate', [$request->startDate, $request->endDate]);
+        if ($request->filled(['start_date', 'end_date'])) {
+            $query->whereBetween('creationDate', [
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay()
+            ]);
         }
 
-        $transactions = $query->paginate(10);
+        $sortDirection = $request->input('sort_direction', 'desc');
+        $query->orderBy('creationDate', $sortDirection);
 
+        $defaultPerPage = config('api.per_page');
+        $maxPerPage = config('api.per_page_max');
+        
+        $perPage = $request->input('per_page', $defaultPerPage);
+        $perPage = min(max($perPage, 1), $maxPerPage);
+
+        $transactions = $query->paginate($perPage);
+        
         return response()->json($transactions);
     }
 

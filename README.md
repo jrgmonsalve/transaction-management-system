@@ -26,7 +26,7 @@ API_KEY=your_secure_api_key
 #front all variables
 ```
 
-### certs
+### generate certs
 ```bash
 
 ```
