@@ -15,3 +15,7 @@ Total rows to be processed: 700000
  700000/700000 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
  Finish: 62.02 seconds
 ```
+
+```bash
+docker compose exec backend php artisan app:import-transactions storage/app/private/transactions.csv
+```
