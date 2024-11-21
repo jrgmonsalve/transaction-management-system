@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   fetchTransactions,
-  deleteTransactionAPI,
 } from "../services/api";
-import Modal from "./Modal";
 import CreateTransactionForm from "./CreateTransactionForm";
 import TransactionFilters from "./TransactionFilters";
 import TransactionsTable from "./TransactionsTable";
 import Pagination from "./Pagination";
 
 const TransactionsDashboard = () => {
-  
-  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
   
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,21 +67,6 @@ const TransactionsDashboard = () => {
     pagination.currentPage,
   ]);
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteTransactionAPI(id);
-      setDeleteModal({ isOpen: false, id: null });
-      loadTransactions();
-    } catch (error) {
-      console.error("Failed to delete transaction:", error);
-    }
-  };
-  
-  const handleDeleteClick = (id) => {
-    setDeleteModal({ isOpen: true, id });
-  };
-
-
   // Filter handlers grouped together
   const handleFiltersChange = {
     onStartDateChange: setStartDateFilter,
@@ -105,7 +86,6 @@ const TransactionsDashboard = () => {
       {/* Create Transaction Form Component */}
       <CreateTransactionForm
         onTransactionCreated={loadTransactions}
-        //onSubmit={handleCreate}
       />
 
       {/* Filters Component */}
@@ -122,7 +102,7 @@ const TransactionsDashboard = () => {
       <TransactionsTable
         transactions={transactions}
         loading={loading}
-        onDelete={handleDeleteClick}
+        onTransactionDeleted={loadTransactions}
       />
 
       {/* Pagination Component */}
@@ -136,17 +116,6 @@ const TransactionsDashboard = () => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
-      <Modal
-        isOpen={deleteModal.isOpen}
-        onClose={() => setDeleteModal({ isOpen: false, id: null })}
-        onConfirm={() => handleDelete(deleteModal.id)}
-        title="Delete Transaction"
-        message="Are you sure you want to delete this transaction? This action cannot be undone."
-        icon="delete"
-        confirmText="Delete"
-        confirmButtonClass="bg-red-600 hover:bg-red-700 focus:ring-red-500"
-      />
     </div>
   );
 };

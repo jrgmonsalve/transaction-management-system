@@ -34,8 +34,7 @@ const CreateTransactionForm = ({ onTransactionCreated }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormInput
           name="accountNumberFrom"
-          type="number"
-          placeholder="From Account Number (5-15 numbers)"
+          placeholder="From Account Number (5-15 digits)"
           value={formData.accountNumberFrom}
           onChange={handleInputChange}
           error={errors.accountNumberFrom}
@@ -54,8 +53,7 @@ const CreateTransactionForm = ({ onTransactionCreated }) => {
 
         <FormInput
           name="accountNumberTo"
-          type="number"
-          placeholder="To Account Number (5-15 numbers)"
+          placeholder="To Account Number (5-15 digits)"
           value={formData.accountNumberTo}
           onChange={handleInputChange}
           error={errors.accountNumberTo}

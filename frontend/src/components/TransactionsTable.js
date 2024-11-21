@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState } from "react";
+import Modal from "./Modal";
+import { deleteTransactionAPI } from "../services/api";
 
-const TransactionsTable = ({ transactions, loading, onDelete }) => {
+const TransactionsTable = ({ transactions, loading, onTransactionDeleted }) => {
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
+  const handleDeleteClick = (id) => {
+    setDeleteModal({ isOpen: true, id });
+  };
+  const handleDelete = async () => {
+    try {
+      await deleteTransactionAPI(deleteModal.id);
+      setDeleteModal({ isOpen: false, id: null });
+      if (onTransactionDeleted) {
+        onTransactionDeleted();
+      }
+    } catch (error) {
+      console.error("Failed to delete transaction:", error);
+    }
+  };
+
   return (
     <div className="overflow-x-auto bg-white rounded-lg shadow">
       <table className="min-w-full">
@@ -61,7 +79,7 @@ const TransactionsTable = ({ transactions, loading, onDelete }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onDelete(transaction.transactionID)}
+                    onClick={() => handleDeleteClick(transaction.transactionID)}
                     className="text-red-600 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-md px-3 py-1"
                   >
                     Delete
@@ -72,6 +90,17 @@ const TransactionsTable = ({ transactions, loading, onDelete }) => {
           )}
         </tbody>
       </table>
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: null })}
+        onConfirm={handleDelete}
+        title="Delete Transaction"
+        message="Are you sure you want to delete this transaction? This action cannot be undone."
+        icon="delete"
+        confirmText="Delete"
+        confirmButtonClass="bg-red-600 hover:bg-red-700 focus:ring-red-500"
+      />
     </div>
   );
 };
