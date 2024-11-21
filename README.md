@@ -40,6 +40,7 @@ docker compose up -d --build
 
 docker ps
 docker compose exec backend php artisan migrate
+#docker compose exec backend php artisan migrate:fresh
 docker compose exec backend chmod -R 775 storage bootstrap/cache
 docker compose exec backend chown -R www-data:www-data storage bootstrap/cache
 
@@ -69,4 +70,11 @@ docker compose logs frontend
 docker compose logs nginx
 
 docker exec -it <backend-container-id> bash
+```
+
+
+#### test
+to add in pipeline of CI/CD
+```bash
+docker compose exec backend php artisan test --filter TransactionControllerTest
 ```
