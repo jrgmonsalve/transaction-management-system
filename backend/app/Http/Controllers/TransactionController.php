@@ -53,8 +53,8 @@ class TransactionController extends Controller
         $sortDirection = $request->input('sort_direction', 'desc');
         $query->orderBy('creationDate', $sortDirection);
 
-        $defaultPerPage = config('api.per_page');
-        $maxPerPage = config('api.per_page_max');
+        $defaultPerPage = (int) config('api.per_page');
+        $maxPerPage = (int) config('api.per_page_max');
         
         $perPage = $request->input('per_page', $defaultPerPage);
         $perPage = min(max($perPage, 1), $maxPerPage);

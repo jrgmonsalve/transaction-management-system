@@ -43,6 +43,8 @@ docker-compose exec backend php artisan migrate
 docker-compose exec backend chmod -R 775 storage bootstrap/cache
 docker-compose exec backend chown -R www-data:www-data storage bootstrap/cache
 
+docker compose exec backend php artisan app:import-transactions storage/app/private/transactions.csv
+
 ```
 
 optional if have seeders
