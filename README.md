@@ -9,8 +9,7 @@ Ensure you have the following installed:
 
 ## Setup Instructions in local
 
-
-### modify .env files
+### Modify .env files
 
 1. Run the following commands to create the .env files we are going to use.
 
@@ -26,9 +25,6 @@ cp frontend/.env.example frontend/.env
  - In the **backend/.env** for the **API** you only have to modify these variables, keep in mind that the values ​​must match the .env of the docker composer
 ```bash
 APP_ENV=local
-DB_CONNECTION=mysql
-DB_HOST=database
-DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=secret
@@ -36,48 +32,44 @@ API_KEY=your_secure_api_key
 ```
  - In the **frontend/.env** for the **frontend** you must modify all the variables the API_KEY from matching the one in the backend
 
-### containers
+----
 
-#### up
-remember change Dockerfile.dev to Dockerfile.prod in docker-composer.yml
+### Up containers
+
+NOTA: remember change Dockerfile.dev to Dockerfile.prod in docker-composer.yml
 ```bash
 docker compose up -d --build
 
 docker ps
+docker compose exec backend composer install
+docker compose exec backend php artisan key:generate
 docker compose exec backend php artisan migrate
-#docker compose exec backend php artisan migrate:fresh
 docker compose exec backend chmod -R 775 storage bootstrap/cache
 docker compose exec backend chown -R www-data:www-data storage bootstrap/cache
 
 ```
 
-optional if have seeders
-```bash
-docker compose exec backend php artisan db:seed 
-```
-#### down & clean
+### Down & Clean
 
 ```bash
 docker compose down 
-```
-
-delete volumes (like DB):
-```bash
+# or if you want delete volumes:
 docker compose down --volumes
 ```
 
-#### check logs or debug problems
+### Check logs or debug problems
 ```bash
 docker compose logs backend
 docker compose logs frontend
 docker compose logs nginx
-
-docker exec -it <backend-container-id> bash
+# get in container
+docker exec -it <container-id> bash
 ```
+---
 
-
-#### test
-to add in pipeline of CI/CD
+## Tests
+To add in pipeline of CI/CD
 ```bash
 docker compose exec backend php artisan test --filter TransactionControllerTest
+docker compose exec backend npm test
 ```
