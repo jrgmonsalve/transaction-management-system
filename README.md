@@ -24,7 +24,6 @@ cp frontend/.env.example frontend/.env
  - In **.env** for the **docker composer** you must modify all the variables.
  - In the **backend/.env** for the **API** you only have to modify these variables, keep in mind that the values ​​must match the .env of the docker composer
 ```bash
-APP_ENV=local
 DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=secret
